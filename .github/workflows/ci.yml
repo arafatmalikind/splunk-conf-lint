@@ -1,0 +1,25 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python: ["3.9", "3.11", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - run: pip install -e .[test]
+      - run: pytest -q
+      - name: Clean example app passes, sample report is reproducible
+        run: |
+          splunk-conf-lint examples/apps/TA-clean-syslog --fail-on warning
+          splunk-conf-lint examples/apps -f md -o /tmp/report.md --fail-on never
+          diff -u docs/sample-report.md /tmp/report.md

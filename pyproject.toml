@@ -1,0 +1,23 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "splunk-conf-lint"
+version = "0.6.0"
+description = "Lint Splunk app configuration for onboarding, scheduling and packaging problems"
+readme = "README.md"
+license = {text = "MIT"}
+authors = [{name = "Arafat Malik"}]
+requires-python = ">=3.9"
+dependencies = []
+keywords = ["splunk", "lint", "props.conf", "savedsearches", "sarif", "siem"]
+
+[project.optional-dependencies]
+test = ["pytest>=7"]
+
+[project.scripts]
+splunk-conf-lint = "conflint.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
